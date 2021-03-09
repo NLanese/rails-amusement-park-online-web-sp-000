@@ -1,40 +1,23 @@
-<p id="notice"><%= notice %></p>
+<% @attractions.each do |attraction| %>
+  <tr>
 
-<h1>Attractions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Tickets</th>
-      <th>Nausea rating</th>
-      <th>Happiness rating</th>
-      <th>Min height</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @attractions.each do |attraction| %>
-      <tr>
-        <td><%= attraction.name %></td>
-        <td><%= attraction.tickets %></td>
-        <td><%= attraction.nausea_rating %></td>
-        <td><%= attraction.happiness_rating %></td>
-        <td><%= attraction.min_height %></td>
-        <% if User.find(session[:user_id]).admin %>
-          <td><%= link_to "See attraction", attraction_path(attraction) %></td>
-          <td><%= link_to "Show #{attraction.name}", attraction_path(attraction) %></td>
-          <td><%= link_to 'Edit Attractions', edit_admin_attraction_path(attraction) %></td>
-          <td><%= link_to 'Destroy', attraction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <td><%= link_to "New Attraction", new_admin_attraction_path(attraction) %></td>
-        <% else %>
-          <td><%= link_to "Go on #{attraction.name}", attraction_path(attraction) %></td>
-        <% end %>
-      </tr>
+    <td><%= attraction.name %></td>
+    <td><%= attraction.tickets %></td>
+    <% if User.find(session[:user_id]).admin %>
+      <td><%= link_to "Show #{attraction.name}", attraction_path(attraction) %></td>
+    <% else %>
+      <td><%= link_to "Go on #{attraction.name}", attraction_path(attraction) %></td>
     <% end %>
-  </tbody>
+  </tr>
+<% end %>
+</tbody>
 </table>
-
 <br>
 
+<% if @user %>
+<p>
+<%= link_to "Back to profile", user_path(@user), {:class => "btn btn-primary"} %>
+</p>
+<% else %>
+<p><%= link_to 'New Attraction', new_attraction_path %></p>
+<% end %>
